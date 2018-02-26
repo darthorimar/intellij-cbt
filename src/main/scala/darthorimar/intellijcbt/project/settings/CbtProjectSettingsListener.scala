@@ -1,0 +1,5 @@
+package darthorimar.intellijcbt.project.settings
+
+import com.intellij.openapi.externalSystem.settings.ExternalSystemSettingsListener
+
+trait CbtProjectSettingsListener extends ExternalSystemSettingsListener[CbtProjectSettings]

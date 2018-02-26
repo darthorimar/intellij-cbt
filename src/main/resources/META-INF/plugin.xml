@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<idea-plugin>
+    <id>darthorimar.cbt</id>
+    <name>CBT</name>
+    <version>0.1</version>
+
+    <description><![CDATA[
+      CBT build tool support for Scala programming language
+    ]]></description>
+
+    <depends>org.intellij.scala</depends>
+    <idea-version since-build="173.0"/>
+
+    <application-components>
+        <component>
+            <implementation-class>darthorimar.intellijcbt.settings.StartupRoutine</implementation-class>
+        </component>
+        <component>
+            <implementation-class>darthorimar.intellijcbt.settings.CbtGlobalSettings</implementation-class>
+        </component>
+    </application-components>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="darthorimar.intellijcbt.runner.CbtConfigurationType"/>
+        <projectService serviceImplementation="darthorimar.intellijcbt.project.settings.CbtSystemSettings"/>
+        <projectService serviceImplementation="darthorimar.intellijcbt.project.settings.CbtLocalSettings"/>
+        <externalSystemManager implementation="darthorimar.intellijcbt.project.CbtExternalSystemManager"/>
+        <projectTemplatesFactory
+                implementation="darthorimar.intellijcbt.project.template.CbtIdeaProjectTemplateFactory"
+                order="first"/>
+
+        <projectImportProvider implementation="darthorimar.intellijcbt.project.CbtProjectImportProvider"/>
+        <projectImportBuilder implementation="darthorimar.intellijcbt.project.CbtProjectImportBuilder"/>
+        <projectConfigurable groupId="build.tools" displayName="CBT"
+                             instance="darthorimar.intellijcbt.settings.CbtExternalSystemConfigurable"/>
+        <moduleType id="CBT_EXTRA_MODULE" implementationClass="darthorimar.intellijcbt.project.CbtExtraModuleType"/>
+        <moduleType id="CBT_TEST_MODULE" implementationClass="darthorimar.intellijcbt.project.CbtTestModuleType"/>
+
+        <externalProjectDataService
+                implementation="darthorimar.intellijcbt.project.data.service.CbtProjectDataService"/>
+        <externalProjectDataService
+                implementation="darthorimar.intellijcbt.project.data.service.CbtModuleExtDataService"/>
+        <internalFileTemplate name="CBT Build Class"/>
+        <externalSystemTaskNotificationListener
+                implementation="darthorimar.intellijcbt.project.CbtNotificationListener"/>
+        <projectTaskRunner implementation="darthorimar.intellijcbt.runner.CbtProjectTaskRunner"/>
+        <stepsBeforeRunProvider implementation="darthorimar.intellijcbt.runner.RunCbtDebuggerBeforeRunProvider"/>
+        <runLineMarkerContributor implementationClass="darthorimar.intellijcbt.annotator.CbtLineMarkerProvider"
+                                  language="Scala"/>
+
+
+        <toolWindow id="CBT" anchor="right"
+                    icon="/org/jetbrains/plugins/scala/images/cbt_toolwin.png"
+                    factoryClass="darthorimar.intellijcbt.project.CbtToolWindowFactory"
+                    conditionClass="darthorimar.intellijcbt.project.CbtToolWindowFactoryCondition"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="org.intellij.scala">
+        <scalaIntentionAvailabilityChecker implementation="darthorimar.intellijcbt.inspection.InspectionDisabler"/>
+    </extensions>
+    <actions>
+        <action id="ConsiderAsCbtModule" class="darthorimar.intellijcbt.action.ConsiderAsCbtModule"
+                text="Consider as CBT module">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+        </action>
+        <action id="StopConsiderAsCbtModule" class="darthorimar.intellijcbt.action.StopConsiderAsCbtModule"
+                text="Stop consider as CBT module">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+        </action>
+        <action id="NewCbtBuildFile" class="darthorimar.intellijcbt.action.NewCbtBuildFileAction"
+                text="CBT build file">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Scala.NewClass"/>
+        </action>
+    </actions>
+
+</idea-plugin>
