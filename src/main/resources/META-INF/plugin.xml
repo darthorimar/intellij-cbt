@@ -4,6 +4,7 @@
     <id>darthorimar.cbt</id>
     <name>CBT</name>
     <version>0.1</version>
+    <vendor url="https://github.com/darthorimar"/>
 
     <description><![CDATA[
       CBT build tool support for Scala programming language
